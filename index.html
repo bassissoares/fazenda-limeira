@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resumo Reprodutivo - IATF e TETF</title>
+  <style>
+    :root {
+      --bg: #f5f1ea;
+      --paper: #ffffff;
+      --grid: #d4d7db;
+      --text: #25313a;
+      --muted: #66717b;
+      --iatf: #6f8f4d;
+      --tetf: #975f47;
+      --bar: #05657c;
+      --warn: #fff5c9;
+      --warn-border: #e5d36b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+
+    main {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 12px 16px 28px;
+      background: var(--paper);
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 4px 0 16px;
+      border-bottom: 1px solid #e3ded4;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: #5c5148;
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 24px;
+      margin-top: 18px;
+    }
+
+    .grid > div {
+      min-width: 0;
+      overflow-x: auto;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    .story {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 14px;
+      margin-top: 18px;
+      align-items: stretch;
+    }
+
+    .story-card {
+      border: 1px solid #d8dde2;
+      background: #fff;
+      padding: 14px;
+      min-height: 132px;
+    }
+
+    .story-card.primary {
+      background: #f8fbf3;
+      border-left: 6px solid var(--iatf);
+    }
+
+    .story-card.secondary {
+      background: #fff8f4;
+      border-left: 6px solid var(--tetf);
+    }
+
+    .story-card h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .big-number {
+      display: block;
+      margin: 6px 0;
+      font-size: 40px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .story-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .section-title {
+      color: #fff;
+      font-weight: 700;
+      text-align: center;
+      padding: 5px 8px;
+      min-height: 24px;
+    }
+
+    .iatf { background: var(--iatf); }
+    .tetf { background: var(--tetf); }
+    .mixed { background: linear-gradient(90deg, var(--iatf) 0 50%, var(--tetf) 50%); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      table-layout: fixed;
+      min-width: 560px;
+    }
+
+    th, td {
+      border: 1px solid var(--grid);
+      padding: 5px 7px;
+      vertical-align: middle;
+      overflow-wrap: anywhere;
+    }
+
+    th {
+      background: #eef0f3;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    th:first-child, td:first-child { text-align: left; }
+    td:not(:first-child) { text-align: right; }
+
+    .split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
+    }
+
+    .chart-card {
+      border: 1px solid #e1e4e7;
+      background: #fff;
+      min-height: 300px;
+      padding: 12px 14px 10px;
+    }
+
+    .chart-card h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .chart {
+      width: 100%;
+      height: 230px;
+      display: block;
+    }
+
+    .chart-card.tall {
+      min-height: 340px;
+    }
+
+    .chart-card.tall .chart {
+      height: 270px;
+    }
+
+    .note {
+      min-height: 92px;
+      padding: 16px 14px;
+      border: 1px solid var(--warn-border);
+      background: var(--warn);
+      color: #665a2e;
+      font-style: italic;
+      line-height: 1.45;
+    }
+
+    .explain {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-left: 5px solid #345c68;
+      background: #f7f9fa;
+      color: #40515d;
+      line-height: 1.45;
+    }
+
+    .explain strong {
+      color: var(--text);
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .kpi {
+      border: 1px solid #d8dde2;
+      padding: 10px;
+      background: #fff;
+    }
+
+    .kpi b {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .kpi span { color: var(--muted); }
+
+    .quality td:first-child { width: 70%; }
+
+    .table-panel {
+      overflow-x: auto;
+      border: 1px solid transparent;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #d8dde2;
+    }
+
+    .tab-button {
+      appearance: none;
+      min-height: 38px;
+      padding: 9px 12px;
+      border: 1px solid #c9d0d6;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab-button[aria-selected="true"] {
+      background: #345c68;
+      border-color: #345c68;
+      color: #fff;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    [data-panel][hidden] {
+      display: none;
+    }
+
+    @media (max-width: 820px) {
+      main { padding: 10px; }
+      .grid, .split, .kpi-row, .story { grid-template-columns: 1fr; }
+      .full { grid-column: auto; }
+      h1 { font-size: 18px; }
+      th, td { font-size: 12px; padding: 5px; }
+      .chart-card { min-height: 260px; }
+      .chart { height: 205px; }
+      .story-card { min-height: auto; }
+      .big-number { font-size: 34px; }
+      .tabs { position: sticky; top: 0; z-index: 2; background: var(--paper); }
+      .tab-button { flex: 1 1 calc(50% - 8px); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Resumo Reprodutivo - IATF e TETF</h1>
+      <p class="subtitle" id="subtitle">Carregando dados...</p>
+    </header>
+
+    <section class="kpi-row" aria-label="Indicadores gerais">
+      <div class="kpi"><b id="kpi-records">-</b><span>registros importados</span></div>
+      <div class="kpi"><b id="kpi-closed">-</b><span>DG fechado</span></div>
+      <div class="kpi"><b id="kpi-pending">-</b><span>DG pendente</span></div>
+      <div class="kpi"><b id="kpi-unique">-</b><span>brincos únicos</span></div>
+    </section>
+
+    <section class="story" aria-label="Resumo em linguagem simples">
+      <article class="story-card primary">
+        <h2>Resultado real por animal</h2>
+        <span class="big-number" id="story-effective">-</span>
+        <p id="story-effective-text">Animais únicos que pegaram cria em pelo menos uma rodada.</p>
+      </article>
+      <article class="story-card">
+        <h2>IATF</h2>
+        <span class="big-number" id="story-iatf">-</span>
+        <p id="story-iatf-text">Animais prenhes ao final dos protocolos.</p>
+      </article>
+      <article class="story-card secondary">
+        <h2>TETF</h2>
+        <span class="big-number" id="story-tetf">-</span>
+        <p id="story-tetf-text">Animais prenhes ao final das transferências.</p>
+      </article>
+    </section>
+
+    <nav class="tabs" aria-label="Análises do painel">
+      <button class="tab-button" type="button" data-tab="principal" aria-selected="true">Principal</button>
+      <button class="tab-button" type="button" data-tab="rodadas" aria-selected="false">Rodadas</button>
+      <button class="tab-button" type="button" data-tab="touros" aria-selected="false">Touros</button>
+      <button class="tab-button" type="button" data-tab="vazios" aria-selected="false">Vazios</button>
+      <button class="tab-button" type="button" data-tab="repetidoras" aria-selected="false">Repetidoras</button>
+      <button class="tab-button" type="button" data-tab="dados" aria-selected="false">Dados</button>
+    </nav>
+
+    <div class="explain" data-panel="principal">
+      <strong>Objetivo desta tela:</strong> mostrar o resultado final de forma simples. Aqui a conta principal é por animal único: se a vaca entrou em mais de uma rodada, ela aparece uma vez só. Assim fica claro quantos animais realmente ficaram prenhes e quantos ainda ficaram vazios.
+    </div>
+    <div class="explain" data-panel="rodadas">
+      <strong>Objetivo desta aba:</strong> comparar as rodadas para enxergar onde o resultado subiu ou caiu. Ela ajuda a conversar sobre manejo, calendário, protocolo e qualidade do lote em cada momento.
+    </div>
+    <div class="explain" data-panel="touros">
+      <strong>Objetivo desta aba:</strong> ver quais touros ou acasalamentos entregaram melhor resultado. A leitura deve considerar também o volume, porque taxa alta com poucos serviços pode enganar.
+    </div>
+    <div class="explain" data-panel="vazios">
+      <strong>Objetivo desta aba:</strong> listar os animais que ainda ficaram vazios ao final. Essa é a lista prática para decisão de manejo, reavaliação, descarte ou nova tentativa.
+    </div>
+    <div class="explain" data-panel="repetidoras">
+      <strong>Objetivo desta aba:</strong> separar os animais que precisaram de mais de uma tentativa. Aqui dá para ver quem pegou cria depois de repetir protocolo e quem continuou vazio mesmo após insistir.
+    </div>
+    <div class="explain" data-panel="dados">
+      <strong>Objetivo desta aba:</strong> apontar pontos da planilha que merecem conferência antes de tomar decisão. Não quer dizer que esteja errado; quer dizer que vale revisar para evitar leitura torta.
+    </div>
+
+    <section class="grid">
+      <div class="full">
+        <div class="section-title mixed">Taxa Efetiva por Animal</div>
+        <div class="table-panel">
+          <table>
+            <thead>
+              <tr><th>Técnica</th><th>Animais protocolados</th><th>Prenhes ao final</th><th>Vazios ao final</th><th>Taxa efetiva</th></tr>
+            </thead>
+            <tbody id="animal-effectiveness"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title mixed">Prenhez Efetiva</div>
+        <div class="chart-card tall">
+          <h2>Taxa por animal único</h2>
+          <canvas class="chart" id="effective-chart"></canvas>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title mixed">Animais Vazios</div>
+        <div class="chart-card tall">
+          <h2>Quem ainda ficou vazio ao final</h2>
+          <canvas class="chart" id="empty-chart"></canvas>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title iatf">Animais IATF Vazios ao Final</div>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Brinco</th><th>RGD</th><th>Qtd. rodadas</th><th>Último DG</th></tr></thead>
+            <tbody id="empty-iatf"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title tetf">Animais TETF Vazios ao Final</div>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Brinco</th><th>Qtd. rodadas</th><th>Último DG</th><th>Último serviço</th></tr></thead>
+            <tbody id="empty-tetf"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="full">
+        <div class="split">
+          <div class="section-title iatf">IATF</div>
+          <div class="section-title tetf">TETF</div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Indicador</th><th>Total</th><th>Prenhezes</th><th>Taxa</th><th>Indicador</th><th>Total</th><th>Prenhezes</th><th>Taxa</th></tr>
+          </thead>
+          <tbody id="technique-summary"></tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="section-title mixed">Taxa por Técnica</div>
+        <div class="chart-card">
+          <h2>Taxa total de prenhez</h2>
+          <canvas class="chart" id="technique-chart"></canvas>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title iatf">Rodadas IATF</div>
+        <table>
+          <thead><tr><th>Rodada</th><th>Procedimentos</th><th>Prenhezes</th><th>Taxa</th></tr></thead>
+          <tbody id="rounds-iatf"></tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="section-title tetf">Rodadas TETF</div>
+        <table>
+          <thead><tr><th>Rodada</th><th>Transferências</th><th>Prenhezes</th><th>Taxa</th></tr></thead>
+          <tbody id="rounds-tetf"></tbody>
+        </table>
+      </div>
+
+      <div class="full">
+        <div class="section-title mixed">Evolução por Rodada</div>
+        <div class="chart-card">
+          <h2>Evolução das taxas por rodada</h2>
+          <canvas class="chart" id="round-chart"></canvas>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title iatf">Ranking de Touros - IATF</div>
+        <table>
+          <thead><tr><th>Touro</th><th>Serviços</th><th>Prenhezes</th><th>Taxa</th></tr></thead>
+          <tbody id="bulls-iatf"></tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="section-title tetf">Ranking de Touros - TETF</div>
+        <table>
+          <thead><tr><th>Touro</th><th>Transferências</th><th>Prenhezes</th><th>Taxa</th></tr></thead>
+          <tbody id="bulls-tetf"></tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="section-title iatf">Top Touros IATF</div>
+        <div class="chart-card">
+          <h2>Top 6 touros IATF por taxa</h2>
+          <canvas class="chart" id="iatf-bulls-chart"></canvas>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title tetf">Top Touros TETF</div>
+        <div class="chart-card">
+          <h2>Touros TETF por taxa</h2>
+          <canvas class="chart" id="tetf-bulls-chart"></canvas>
+        </div>
+      </div>
+
+      <div data-panel="repetidoras">
+        <div class="section-title mixed">Prenhez por Tentativa</div>
+        <div class="chart-card">
+          <h2>Em qual rodada o animal pegou cria</h2>
+          <canvas class="chart" id="attempt-chart"></canvas>
+        </div>
+      </div>
+
+      <div data-panel="repetidoras">
+        <div class="section-title mixed">Animais com Mais de Uma Tentativa</div>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Técnica</th><th>Brinco</th><th>Qtd. tentativas</th><th>Resultado</th><th>Primeira prenhez</th></tr></thead>
+            <tbody id="repeaters"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="full">
+        <div class="section-title mixed">Qualidade dos Dados</div>
+        <table class="quality">
+          <tbody id="quality"></tbody>
+        </table>
+      </div>
+
+      <div class="full note" id="note"></div>
+    </section>
+  </main>
+
+  <script src="data/summary.js"></script>
+  <script>
+    const pct = value => `${Number(value || 0).toFixed(1)}%`;
+    const num = value => Number(value || 0).toLocaleString('pt-BR');
+
+    function row(cells) {
+      return `<tr>${cells.map(value => `<td>${value}</td>`).join('')}</tr>`;
+    }
+
+    function fillRows(id, items, columns) {
+      document.getElementById(id).innerHTML = items.map(item => row(columns.map(column => {
+        if (column.type === 'pct') return pct(item[column.key]);
+        if (column.type === 'list') return (item[column.key] || []).join(', ');
+        return item[column.key] ?? '';
+      }))).join('');
+    }
+
+    function drawBarChart(canvas, labels, values, options = {}) {
+      const ctx = canvas.getContext('2d');
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(w * ratio);
+      canvas.height = Math.floor(h * ratio);
+      ctx.scale(ratio, ratio);
+      ctx.clearRect(0, 0, w, h);
+
+      const pad = { top: 12, right: 10, bottom: 42, left: 42 };
+      const max = Math.max(options.max || 100, ...values);
+      const suffix = options.suffix === undefined ? '%' : options.suffix;
+      const plotW = w - pad.left - pad.right;
+      const plotH = h - pad.top - pad.bottom;
+
+      ctx.strokeStyle = '#d8d8d8';
+      ctx.fillStyle = '#5f6870';
+      ctx.font = '11px Arial';
+      ctx.textAlign = 'right';
+      for (let i = 0; i <= 5; i++) {
+        const y = pad.top + plotH - (plotH * i / 5);
+        ctx.beginPath();
+        ctx.setLineDash([4, 3]);
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(w - pad.right, y);
+        ctx.stroke();
+        ctx.fillText(`${(max * i / 5).toFixed(0)}${suffix}`, pad.left - 6, y + 4);
+      }
+      ctx.setLineDash([]);
+
+      const gap = Math.min(42, plotW / Math.max(labels.length, 1) * 0.45);
+      const barW = (plotW - gap * (labels.length + 1)) / Math.max(labels.length, 1);
+      values.forEach((value, index) => {
+        const x = pad.left + gap + index * (barW + gap);
+        const barH = plotH * value / max;
+        const y = pad.top + plotH - barH;
+        ctx.fillStyle = options.color || '#05657c';
+        ctx.fillRect(x, y, barW, barH);
+        ctx.fillStyle = '#525a61';
+        ctx.textAlign = 'center';
+        ctx.fillText(labels[index].length > 12 ? `${labels[index].slice(0, 10)}...` : labels[index], x + barW / 2, h - 18);
+      });
+    }
+
+    function drawLineChart(canvas, labels, values) {
+      const ctx = canvas.getContext('2d');
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(w * ratio);
+      canvas.height = Math.floor(h * ratio);
+      ctx.scale(ratio, ratio);
+      ctx.clearRect(0, 0, w, h);
+
+      const pad = { top: 12, right: 14, bottom: 42, left: 42 };
+      const max = Math.max(70, ...values);
+      const plotW = w - pad.left - pad.right;
+      const plotH = h - pad.top - pad.bottom;
+
+      ctx.strokeStyle = '#d8d8d8';
+      ctx.fillStyle = '#5f6870';
+      ctx.font = '11px Arial';
+      ctx.textAlign = 'right';
+      for (let i = 0; i <= 7; i++) {
+        const y = pad.top + plotH - (plotH * i / 7);
+        ctx.beginPath();
+        ctx.setLineDash([4, 3]);
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(w - pad.right, y);
+        ctx.stroke();
+        ctx.fillText(`${(max * i / 7).toFixed(0)}%`, pad.left - 6, y + 4);
+      }
+      ctx.setLineDash([]);
+
+      const step = plotW / Math.max(values.length - 1, 1);
+      ctx.beginPath();
+      values.forEach((value, index) => {
+        const x = pad.left + step * index;
+        const y = pad.top + plotH - (plotH * value / max);
+        if (index === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = '#05657c';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      values.forEach((value, index) => {
+        const x = pad.left + step * index;
+        const y = pad.top + plotH - (plotH * value / max);
+        ctx.fillStyle = '#05657c';
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#525a61';
+        ctx.textAlign = 'center';
+        const label = labels[index].length > 11 ? `${labels[index].slice(0, 9)}...` : labels[index];
+        ctx.fillText(label, x, h - 18);
+      });
+    }
+
+    async function loadSummary() {
+      if (window.IATF_TETF_SUMMARY) {
+        return window.IATF_TETF_SUMMARY;
+      }
+
+      const response = await fetch('data/summary.json', { cache: 'no-store' });
+      return response.json();
+    }
+
+    function getGridItem(element) {
+      let current = element;
+      while (current && current.parentElement && !current.parentElement.classList.contains('grid')) {
+        current = current.parentElement;
+      }
+      return current;
+    }
+
+    function setupTabs() {
+      const panelSelectors = {
+        principal: ['#animal-effectiveness', '#effective-chart', '#empty-chart', '#technique-summary', '#note'],
+        rodadas: ['#rounds-iatf', '#rounds-tetf', '#round-chart', '#technique-chart'],
+        touros: ['#bulls-iatf', '#bulls-tetf', '#iatf-bulls-chart', '#tetf-bulls-chart'],
+        vazios: ['#empty-iatf', '#empty-tetf'],
+        repetidoras: ['#repeaters', '#attempt-chart'],
+        dados: ['#quality']
+      };
+
+      Object.entries(panelSelectors).forEach(([panel, selectors]) => {
+        selectors.forEach(selector => {
+          const element = document.querySelector(selector);
+          const gridItem = element ? getGridItem(element) : null;
+          if (gridItem) {
+            gridItem.dataset.panel = panel;
+          }
+        });
+      });
+
+      const buttons = [...document.querySelectorAll('.tab-button')];
+      const items = [...document.querySelectorAll('[data-panel]')];
+
+      function selectTab(tab) {
+        buttons.forEach(button => {
+          button.setAttribute('aria-selected', String(button.dataset.tab === tab));
+        });
+        items.forEach(item => {
+          item.hidden = item.dataset.panel !== tab;
+        });
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 0);
+      }
+
+      buttons.forEach(button => {
+        button.addEventListener('click', () => selectTab(button.dataset.tab));
+      });
+
+      selectTab('principal');
+    }
+
+    async function load() {
+      const summary = await loadSummary();
+
+      document.getElementById('subtitle').textContent = `Base: ${summary.sourceFile} | ${summary.criterio}`;
+      document.getElementById('kpi-records').textContent = num(summary.totals.registrosPlanilha);
+      document.getElementById('kpi-closed').textContent = num(summary.totals.registrosComDgFechado);
+      document.getElementById('kpi-pending').textContent = num(summary.totals.registrosPendentes);
+      document.getElementById('kpi-unique').textContent = num(summary.totals.brincosUnicos);
+
+      const iatf = summary.porTecnica.find(x => x.tecnica === 'IATF') || {};
+      const tetf = summary.porTecnica.find(x => x.tecnica === 'TETF') || {};
+      const effIatf = (summary.efetividadeAnimal || []).find(x => x.tecnica === 'IATF') || {};
+      const effTetf = (summary.efetividadeAnimal || []).find(x => x.tecnica === 'TETF') || {};
+      const effectiveTotalAnimals = (effIatf.animaisProtocolados || 0) + (effTetf.animaisProtocolados || 0);
+      const effectivePregnant = (effIatf.prenhesAoFinal || 0) + (effTetf.prenhesAoFinal || 0);
+      const effectiveRate = effectiveTotalAnimals ? (effectivePregnant * 100 / effectiveTotalAnimals) : 0;
+
+      document.getElementById('story-effective').textContent = pct(effectiveRate);
+      document.getElementById('story-effective-text').textContent =
+        `${effectivePregnant} de ${effectiveTotalAnimals} animais únicos ficaram prenhes ao final.`;
+      document.getElementById('story-iatf').textContent = pct(effIatf.taxaEfetiva || 0);
+      document.getElementById('story-iatf-text').textContent =
+        `${effIatf.prenhesAoFinal || 0} de ${effIatf.animaisProtocolados || 0} animais ficaram prenhes; ${effIatf.vaziosAoFinal || 0} ficaram vazios.`;
+      document.getElementById('story-tetf').textContent = pct(effTetf.taxaEfetiva || 0);
+      document.getElementById('story-tetf-text').textContent =
+        `${effTetf.prenhesAoFinal || 0} de ${effTetf.animaisProtocolados || 0} animais ficaram prenhes; ${effTetf.vaziosAoFinal || 0} ficaram vazios.`;
+
+      fillRows('animal-effectiveness', summary.efetividadeAnimal || [], [
+        { key: 'tecnica' },
+        { key: 'animaisProtocolados' },
+        { key: 'prenhesAoFinal' },
+        { key: 'vaziosAoFinal' },
+        { key: 'taxaEfetiva', type: 'pct' }
+      ]);
+      fillRows('empty-iatf', (effIatf.animaisVazios || []).slice(0, 60), [
+        { key: 'brinco' },
+        { key: 'rgd' },
+        { key: 'procedimentos' },
+        { key: 'ultimoDg' }
+      ]);
+      fillRows('empty-tetf', (effTetf.animaisVazios || []).slice(0, 60), [
+        { key: 'brinco' },
+        { key: 'procedimentos' },
+        { key: 'ultimoDg' },
+        { key: 'ultimoServico' }
+      ]);
+
+      document.getElementById('technique-summary').innerHTML = [
+        row(['Procedimentos concluídos', iatf.total || 0, iatf.prenhezes || 0, pct(iatf.taxa), 'Transferências concluídas', tetf.total || 0, tetf.prenhezes || 0, pct(tetf.taxa)]),
+        row(['Rodadas concluídas', summary.rodadasIatf.length, '', '', 'Rodadas concluídas', summary.rodadasTetf.length, '', '']),
+        row(['Procedimentos pendentes', 0, '', '', 'Transferências pendentes', 0, '', ''])
+      ].join('');
+
+      fillRows('rounds-iatf', summary.rodadasIatf, [
+        { key: 'nome' }, { key: 'procedimentos' }, { key: 'prenhezes' }, { key: 'taxa', type: 'pct' }
+      ]);
+      fillRows('rounds-tetf', summary.rodadasTetf, [
+        { key: 'nome' }, { key: 'transferencias' }, { key: 'prenhezes' }, { key: 'taxa', type: 'pct' }
+      ]);
+      fillRows('bulls-iatf', summary.tourosIatf, [
+        { key: 'nome' }, { key: 'servicos' }, { key: 'prenhezes' }, { key: 'taxa', type: 'pct' }
+      ]);
+      fillRows('bulls-tetf', summary.tourosTetf, [
+        { key: 'nome' }, { key: 'transferencias' }, { key: 'prenhezes' }, { key: 'taxa', type: 'pct' }
+      ]);
+      fillRows('repeaters', (summary.repetidoras || []).slice(0, 80), [
+        { key: 'tecnica' },
+        { key: 'brinco' },
+        { key: 'tentativas' },
+        { key: 'resultado' },
+        { key: 'primeiraPrenhez' }
+      ]);
+
+      document.getElementById('quality').innerHTML = [
+        ...(summary.alertasDados || []).map(alert => row([alert.alerta, alert.quantidade, alert.leitura])),
+        row(['Grafias normalizadas no ETL', summary.qualidade.grafiasServicoNormalizadas.join(', '), 'Padronização aplicada para evitar duplicidade em rankings.'])
+      ].join('');
+
+      document.getElementById('note').textContent =
+        'Leitura recomendada: os indicadores desta página usam apenas linhas com brinco numérico e DG preenchido. ' +
+        'A taxa efetiva por animal agrupa o mesmo brinco em todas as rodadas e conta prenhez se o animal emprenhou em qualquer protocolo. ' +
+        'As linhas de totais, raças e quadros auxiliares da planilha foram preservadas fora da base analítica. ' +
+        'No TETF, leia rankings junto com o volume de transferências, porque algumas amostras são pequenas.';
+
+      const topIatf = summary.tourosIatf.slice(0, 6);
+      const topTetf = summary.tourosTetf.slice(0, 6);
+      const rounds = [...summary.rodadasIatf, ...summary.rodadasTetf];
+      const effective = summary.efetividadeAnimal || [];
+      const attempts = summary.prenhezPorTentativa || [];
+      const attemptLabels = attempts.map(x => `${x.tecnica} ${x.rodada.replace('º ', '')}`);
+
+      drawBarChart(document.getElementById('effective-chart'), effective.map(x => x.tecnica), effective.map(x => x.taxaEfetiva), { max: 100 });
+      drawBarChart(document.getElementById('empty-chart'), effective.map(x => x.tecnica), effective.map(x => x.vaziosAoFinal), { max: Math.max(10, ...effective.map(x => x.vaziosAoFinal || 0)), suffix: '' });
+      drawBarChart(document.getElementById('attempt-chart'), attemptLabels, attempts.map(x => x.animais), { max: Math.max(5, ...attempts.map(x => x.animais || 0)), suffix: '' });
+      drawBarChart(document.getElementById('technique-chart'), summary.porTecnica.map(x => x.tecnica), summary.porTecnica.map(x => x.taxa), { max: 60 });
+      drawLineChart(document.getElementById('round-chart'), rounds.map(x => x.nome), rounds.map(x => x.taxa));
+      drawBarChart(document.getElementById('iatf-bulls-chart'), topIatf.map(x => x.nome), topIatf.map(x => x.taxa), { max: 100 });
+      drawBarChart(document.getElementById('tetf-bulls-chart'), topTetf.map(x => x.nome), topTetf.map(x => x.taxa), { max: 100 });
+
+      window.addEventListener('resize', () => {
+        drawBarChart(document.getElementById('effective-chart'), effective.map(x => x.tecnica), effective.map(x => x.taxaEfetiva), { max: 100 });
+        drawBarChart(document.getElementById('empty-chart'), effective.map(x => x.tecnica), effective.map(x => x.vaziosAoFinal), { max: Math.max(10, ...effective.map(x => x.vaziosAoFinal || 0)), suffix: '' });
+        drawBarChart(document.getElementById('attempt-chart'), attemptLabels, attempts.map(x => x.animais), { max: Math.max(5, ...attempts.map(x => x.animais || 0)), suffix: '' });
+        drawBarChart(document.getElementById('technique-chart'), summary.porTecnica.map(x => x.tecnica), summary.porTecnica.map(x => x.taxa), { max: 60 });
+        drawLineChart(document.getElementById('round-chart'), rounds.map(x => x.nome), rounds.map(x => x.taxa));
+        drawBarChart(document.getElementById('iatf-bulls-chart'), topIatf.map(x => x.nome), topIatf.map(x => x.taxa), { max: 100 });
+        drawBarChart(document.getElementById('tetf-bulls-chart'), topTetf.map(x => x.nome), topTetf.map(x => x.taxa), { max: 100 });
+      });
+
+      setupTabs();
+    }
+
+    load().catch(error => {
+      document.getElementById('subtitle').textContent = `Falha ao carregar data/summary.json: ${error.message}`;
+    });
+  </script>
+</body>
+</html>

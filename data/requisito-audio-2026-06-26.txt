@@ -1,0 +1,25 @@
+Transcricao do audio WhatsApp Ptt 2026-06-26 at 10.51.23.ogg
+
+O Breno, eu estou analisando esse relatorio aqui.
+So uma coisa que ficou faltando, ver se voce consegue me ajudar.
+E o seguinte, analisando em todas as rodadas de IATF e de TETF separadamente,
+sera que a inteligencia artificial consegue me indicar todos os animais que foram protocolados
+e que nao emprenharam?
+
+Tipo assim, no final das contas, eu fiz IATF, as vezes duas, tres vezes numa mesma vaca, ela emprenhou.
+Tem uns que emprenharam de primeira, tem uns que emprenharam de segunda, tem uns que emprenharam de terceiro,
+tem uns que nao emprenharam.
+
+Sera que a inteligencia artificial consegue indicar quantos animais,
+ai nao e a quantidade de vez que foram inseminados,
+quantos animais que foram colocados no protocolo, inseminados,
+e quais delas, depois dos seis protocolos, continuaram vazias.
+
+Exemplo informado: colocamos 100 vacas e emprenharam 80; taxa de prenhez efetiva de 80%.
+Para transferencia de embriao, aplicar a mesma leitura.
+
+Requisito implementado:
+- calcular taxa efetiva por animal unico, agrupando por brinco;
+- contar o animal como prenhe se teve prenhez em qualquer rodada;
+- listar animais que passaram por protocolo/transferencia e continuaram vazios ao final;
+- manter os indicadores por procedimento/rodada separados da taxa efetiva por animal.
