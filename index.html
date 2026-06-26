@@ -362,49 +362,68 @@
       }
       table {
         min-width: 0;
+        table-layout: fixed;
       }
       .table-panel {
         overflow-x: visible;
       }
-      table.mobile-card,
-      table.mobile-card thead,
-      table.mobile-card tbody,
-      table.mobile-card tr,
-      table.mobile-card th,
-      table.mobile-card td {
-        display: block;
+      th, td {
+        font-size: 11px;
+        line-height: 1.15;
+        padding: 4px 3px;
       }
-      table.mobile-card thead {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-        clip: rect(0 0 0 0);
+      th:first-child,
+      td:first-child {
+        width: 34%;
       }
-      table.mobile-card tr {
-        margin-bottom: 8px;
-        border: 1px solid var(--grid);
-        background: #fff;
+      #technique-summary td,
+      #technique-summary th {
+        font-size: 10px;
+        padding: 4px 2px;
       }
-      table.mobile-card td {
-        display: grid;
-        grid-template-columns: minmax(90px, 42%) minmax(0, 1fr);
-        gap: 8px;
-        border: 0;
-        border-bottom: 1px solid #eceff1;
-        text-align: left;
-        min-height: 30px;
+      #technique-summary td:first-child,
+      #technique-summary th:first-child,
+      #technique-summary td:nth-child(5),
+      #technique-summary th:nth-child(5) {
+        width: 22%;
       }
-      table.mobile-card td:last-child {
-        border-bottom: 0;
+      #bulls-iatf td:first-child,
+      #bulls-iatf th:first-child,
+      #bulls-tetf td:first-child,
+      #bulls-tetf th:first-child {
+        width: 43%;
       }
-      table.mobile-card td::before {
-        content: attr(data-label);
-        color: var(--muted);
-        font-weight: 700;
+      #bulls-iatf td:not(:first-child),
+      #bulls-iatf th:not(:first-child),
+      #bulls-tetf td:not(:first-child),
+      #bulls-tetf th:not(:first-child) {
+        width: 19%;
       }
-      table.mobile-card td:not(:first-child) {
-        text-align: left;
+      #empty-iatf td:first-child,
+      #empty-iatf th:first-child,
+      #empty-tetf td:first-child,
+      #empty-tetf th:first-child {
+        width: 24%;
+      }
+      #repeaters td,
+      #repeaters th {
+        font-size: 10px;
+      }
+      #repeaters td:first-child,
+      #repeaters th:first-child {
+        width: 18%;
+      }
+      #repeaters td:nth-child(2),
+      #repeaters th:nth-child(2) {
+        width: 20%;
+      }
+      #repeaters td:nth-child(3),
+      #repeaters th:nth-child(3) {
+        width: 16%;
+      }
+      #repeaters td:nth-child(4),
+      #repeaters th:nth-child(4) {
+        width: 25%;
       }
       .quality td:first-child {
         width: auto;
@@ -568,18 +587,22 @@
 
       <div>
         <div class="section-title iatf">Ranking de Touros - IATF</div>
-        <table>
-          <thead><tr><th>Touro</th><th>Serviços</th><th>Prenhezes</th><th>Taxa</th></tr></thead>
-          <tbody id="bulls-iatf"></tbody>
-        </table>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Touro</th><th>Serviços</th><th>Prenhezes</th><th>Taxa</th></tr></thead>
+            <tbody id="bulls-iatf"></tbody>
+          </table>
+        </div>
       </div>
 
       <div>
         <div class="section-title tetf">Ranking de Touros - TETF</div>
-        <table>
-          <thead><tr><th>Touro</th><th>Transferências</th><th>Prenhezes</th><th>Taxa</th></tr></thead>
-          <tbody id="bulls-tetf"></tbody>
-        </table>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Touro</th><th>Transf.</th><th>Prenhezes</th><th>Taxa</th></tr></thead>
+            <tbody id="bulls-tetf"></tbody>
+          </table>
+        </div>
       </div>
 
       <div>
@@ -642,22 +665,6 @@
         if (column.type === 'list') return (item[column.key] || []).join(', ');
         return item[column.key] ?? '';
       }))).join('');
-    }
-
-    function applyMobileTableLabels() {
-      document.querySelectorAll('table').forEach(table => {
-        const headers = [...table.querySelectorAll('thead th')].map(th => th.textContent.trim());
-        if (!headers.length) {
-          return;
-        }
-
-        table.classList.add('mobile-card');
-        table.querySelectorAll('tbody tr').forEach(rowElement => {
-          [...rowElement.children].forEach((cell, index) => {
-            cell.setAttribute('data-label', headers[index] || '');
-          });
-        });
-      });
     }
 
     function drawBarChart(canvas, labels, values, options = {}) {
@@ -901,8 +908,6 @@
         'A taxa efetiva por animal agrupa o mesmo brinco em todas as rodadas e conta prenhez se o animal emprenhou em qualquer protocolo. ' +
         'As linhas de totais, raças e quadros auxiliares da planilha foram preservadas fora da base analítica. ' +
         'No TETF, leia rankings junto com o volume de transferências, porque algumas amostras são pequenas.';
-
-      applyMobileTableLabels();
 
       const topIatf = summary.tourosIatf.slice(0, 6);
       const topTetf = summary.tourosTetf.slice(0, 6);
