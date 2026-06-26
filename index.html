@@ -277,14 +277,138 @@
       main { padding: 10px; }
       .grid, .split, .kpi-row, .story { grid-template-columns: 1fr; }
       .full { grid-column: auto; }
-      h1 { font-size: 18px; }
+      header { padding-bottom: 10px; }
+      h1 { font-size: 17px; }
+      .subtitle { font-size: 12px; line-height: 1.35; }
       th, td { font-size: 12px; padding: 5px; }
       .chart-card { min-height: 260px; }
       .chart { height: 205px; }
       .story-card { min-height: auto; }
       .big-number { font-size: 34px; }
-      .tabs { position: sticky; top: 0; z-index: 2; background: var(--paper); }
-      .tab-button { flex: 1 1 calc(50% - 8px); }
+      .tabs {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        margin-top: 12px;
+        background: var(--paper);
+      }
+      .tab-button {
+        width: 100%;
+        min-height: 34px;
+        padding: 7px 5px;
+        font-size: 13px;
+      }
+      .explain {
+        margin-top: 12px;
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+      .kpi-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .kpi { padding: 8px; }
+      .kpi b { font-size: 18px; }
+      .kpi span { font-size: 12px; }
+      .story {
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .story-card {
+        padding: 10px;
+      }
+      .story-card h2 {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .story-card p {
+        font-size: 12px;
+      }
+      .big-number {
+        font-size: 28px;
+      }
+      .grid {
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .section-title {
+        min-height: 21px;
+        padding: 4px 6px;
+        font-size: 13px;
+      }
+      .chart-card {
+        min-height: 228px;
+        padding: 8px;
+      }
+      .chart-card h2 {
+        font-size: 15px;
+        margin-bottom: 6px;
+      }
+      .chart,
+      .chart-card.tall .chart {
+        height: 180px;
+      }
+      .chart-card.tall {
+        min-height: 228px;
+      }
+      .note {
+        min-height: auto;
+        padding: 10px;
+        font-size: 12px;
+      }
+      table {
+        min-width: 0;
+      }
+      .table-panel {
+        overflow-x: visible;
+      }
+      table.mobile-card,
+      table.mobile-card thead,
+      table.mobile-card tbody,
+      table.mobile-card tr,
+      table.mobile-card th,
+      table.mobile-card td {
+        display: block;
+      }
+      table.mobile-card thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+      }
+      table.mobile-card tr {
+        margin-bottom: 8px;
+        border: 1px solid var(--grid);
+        background: #fff;
+      }
+      table.mobile-card td {
+        display: grid;
+        grid-template-columns: minmax(90px, 42%) minmax(0, 1fr);
+        gap: 8px;
+        border: 0;
+        border-bottom: 1px solid #eceff1;
+        text-align: left;
+        min-height: 30px;
+      }
+      table.mobile-card td:last-child {
+        border-bottom: 0;
+      }
+      table.mobile-card td::before {
+        content: attr(data-label);
+        color: var(--muted);
+        font-weight: 700;
+      }
+      table.mobile-card td:not(:first-child) {
+        text-align: left;
+      }
+      .quality td:first-child {
+        width: auto;
+      }
     }
   </style>
 </head>
@@ -518,6 +642,22 @@
         if (column.type === 'list') return (item[column.key] || []).join(', ');
         return item[column.key] ?? '';
       }))).join('');
+    }
+
+    function applyMobileTableLabels() {
+      document.querySelectorAll('table').forEach(table => {
+        const headers = [...table.querySelectorAll('thead th')].map(th => th.textContent.trim());
+        if (!headers.length) {
+          return;
+        }
+
+        table.classList.add('mobile-card');
+        table.querySelectorAll('tbody tr').forEach(rowElement => {
+          [...rowElement.children].forEach((cell, index) => {
+            cell.setAttribute('data-label', headers[index] || '');
+          });
+        });
+      });
     }
 
     function drawBarChart(canvas, labels, values, options = {}) {
@@ -761,6 +901,8 @@
         'A taxa efetiva por animal agrupa o mesmo brinco em todas as rodadas e conta prenhez se o animal emprenhou em qualquer protocolo. ' +
         'As linhas de totais, raças e quadros auxiliares da planilha foram preservadas fora da base analítica. ' +
         'No TETF, leia rankings junto com o volume de transferências, porque algumas amostras são pequenas.';
+
+      applyMobileTableLabels();
 
       const topIatf = summary.tourosIatf.slice(0, 6);
       const topTetf = summary.tourosTetf.slice(0, 6);
